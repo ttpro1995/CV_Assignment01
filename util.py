@@ -1,5 +1,8 @@
-import numpy as np
+# Thai Thien
+# 1351040
 
+import numpy as np
+import cv2
 def test():
     print('success')
 
@@ -13,4 +16,6 @@ def bgr2gray(img):
 
     return ret
 
-
+def smooth_cv(value, img):
+    blur = cv2.GaussianBlur(img, (5, 5), 0)
+    return blur

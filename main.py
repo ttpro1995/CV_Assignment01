@@ -1,59 +1,85 @@
+# Thai Thien
+# 1351040
+
 import cv2
 import util
 
 from matplotlib import pyplot as plt
 import numpy as np
+global cur_img # global value cur_img
+cur_img = None
+cat = None
 
-status = 0
-
-# load image
-cat = cv2.imread('cat.jpg')
-
-cur_img = cat.copy()
-
-# display result
-
-cv2.imshow('current',cur_img)
-#for r in result:
-#   cv2.imshow('result'+str(index),r)
-#   index+=1
+def nothing(a):
+    print (a)
 
 
 
-while(1):
-    key = cv2.waitKey()
+def main():
+    global cur_img
+    global cat
+    status = 0
 
-    if key == ord('i'):
-        cur_img = cat.copy()
-        print 'i'
+    # load image
+    cat = cv2.imread('cat.jpg')
 
-    elif key == ord('g'): #
-        cur_img = cv2.cvtColor(cat,cv2.COLOR_BGR2GRAY)
+    cur_img = cat.copy()
 
-    elif key == ord('G'):
-        cur_img = util.bgr2gray(cat)
+    cv2.imshow('image',cur_img)
 
-    elif key == ord('c'): #
-        c1, c2, c3 = cv2.split(cat)
-        if status == 0:
-            channel = c1
-            status = 1
-        elif status == 1:
-            channel = c2
-            status = 2
-        elif status == 2:
-            channel = c3
-            status = 0
+    while(1):
+        cv2.namedWindow('image')
+        key = cv2.waitKey()
 
-        cur_img = np.zeros((cat.shape[0], cat.shape[1], 3),
-              dtype = cat.dtype)
-        cur_img[:,:,status] = channel
+        if key == ord('i'):
+            cur_img = cat.copy()
+            print 'i'
 
-    elif key == ord('w'):
-        cv2.imwrite('img.png',cur_img)
-        print 'w'
-    elif key == ord('q'):
-        print 'q'
-        quit()
+        elif key == ord('g'): #
+            cur_img = cv2.cvtColor(cat,cv2.COLOR_BGR2GRAY)
 
-    cv2.imshow('current', cur_img)
+        elif key == ord('G'):
+            cur_img = util.bgr2gray(cat)
+
+        elif key == ord('s'):
+            def callback(value):
+                # use global variable because we can only pass in one parameter
+                global cur_img
+                global cat
+                cur_img = cv2.GaussianBlur(cat, (5, 5), value)
+                cv2.imshow('image', cur_img)
+                if (value==0):
+                    cv2.imshow('image',cat) # display original image when value = 0
+
+            cv2.createTrackbar('Smooth',"image",0,255, callback)
+
+        elif key == ord('c'): #
+            c1, c2, c3 = cv2.split(cat)
+            if status == 0:
+                channel = c1
+                status = 1
+            elif status == 1:
+                channel = c2
+                status = 2
+            elif status == 2:
+                channel = c3
+                status = 0
+
+            cur_img = np.zeros((cat.shape[0], cat.shape[1], 3),
+                  dtype = cat.dtype)
+            cur_img[:,:,status] = channel
+
+        elif key == ord('w'):
+            cv2.imwrite('img.png',cur_img)
+            print 'w'
+        elif key == ord('q'):
+            print 'q'
+            quit()
+
+        cv2.imshow('image', cur_img)
+
+
+
+if __name__ == '__main__':
+    main()
+
