@@ -1,4 +1,5 @@
 import cv2
+import util
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -21,23 +22,29 @@ cv2.imshow('current',cur_img)
 
 while(1):
     key = cv2.waitKey()
+
     if key == ord('i'):
         cur_img = cat.copy()
         print 'i'
-    elif key == ord('g'):
-        cur_img = cv2.cvtColor(cur_img,cv2.COLOR_BGR2GRAY)
-    elif key == ord('c'):
-        b, g, r = cv2.split(cat)
+
+    elif key == ord('g'): #
+        cur_img = cv2.cvtColor(cat,cv2.COLOR_BGR2GRAY)
+
+    elif key == ord('G'):
+        cur_img = util.bgr2gray(cat)
+
+    elif key == ord('c'): #
+        c1, c2, c3 = cv2.split(cat)
         if status == 0:
-            channel = b
+            channel = c1
             status = 1
         elif status == 1:
-            channel = g
+            channel = c2
             status = 2
         elif status == 2:
-            channel = r
+            channel = c3
             status = 0
-        print (status)
+
         cur_img = np.zeros((cat.shape[0], cat.shape[1], 3),
               dtype = cat.dtype)
         cur_img[:,:,status] = channel
