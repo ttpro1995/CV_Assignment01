@@ -7,8 +7,10 @@ import util
 from matplotlib import pyplot as plt
 import numpy as np
 global cur_img # global value cur_img
+global grayscale
 cur_img = None
 cat = None
+
 
 def nothing(a):
     print (a)
@@ -18,11 +20,12 @@ def nothing(a):
 def main():
     global cur_img
     global cat
+    global grayscale
     status = 0
 
     # load image
     cat = cv2.imread('cat.jpg')
-
+    grayscale = cv2.cvtColor(cat,cv2.COLOR_BGR2GRAY)
     cur_img = cat.copy()
 
     cv2.imshow('image',cur_img)
@@ -53,16 +56,8 @@ def main():
             cv2.createTrackbar('Smooth',"image",0,255, callback)
 
         elif key == ord('S'):
-            def callback(value):
-                # use global variable because we can only pass in one parameter
-                global cur_img
-                global cat
-                cur_img = util.smooth_fast(value,5,cat)
-                cv2.imshow('image', cur_img)
-                if (value == 0):
-                    cv2.imshow('image', cat)  # display original image when value = 0
-
-            cv2.createTrackbar('Smooth', "image", 0, 255, callback)
+            print ('meow')
+            cur_img = util.filter(grayscale)
 
 
 

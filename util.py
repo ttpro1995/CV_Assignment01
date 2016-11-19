@@ -44,18 +44,10 @@ def calGaussianKernel2(sigma, n):
     kern1d = np.diff(st.norm.cdf(x))
     kernel_raw = np.sqrt(np.outer(kern1d, kern1d))
     kernel = kernel_raw/kernel_raw.sum()
-    return kernel
+    return kernel.view('uint8')
 
-def smooth_one_channel(value,dim,img, mask):
-    nx = img.shape[0]
-    ny = img.shape[1]
-    ret = img.copy()
-    for x in range(0,nx-dim):
-        for y in range (0,ny-dim):
-            region = img[x:x+dim,y:y+dim]
-            s = np.multiply(region,mask)
-            s = s.sum()
-            ret[x+dim//2, y+dim//2] = s
+def smooth_one_channel(value,dim,img, kernel):
+    ret = signal.convolve2d(img, kernel, mode='same')
     return ret
 
 def smooth_verry_slow(value,dim,img):
@@ -71,6 +63,15 @@ def smooth_verry_slow(value,dim,img):
 
 def smooth_fast(value, dim, img):
     value = 255 - value
-    kernel = calGaussianKernel2(value*0.05, dim)
+    kernel = calGaussianKernel2(value, dim)
     ret = cv2.filter2D(img,-1,kernel)
+    return ret
+
+def filter(img):
+    ret = img.copy()
+    kernel = np.ones((3,3),dtype='uint8')/9
+    ret = signal.convolve2d(img, kernel, mode='same')
+    ret = ret.astype(np.uint8)
+    print(ret.dtype)
+    print(img.dtype)
     return ret
