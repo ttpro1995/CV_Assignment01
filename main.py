@@ -50,8 +50,21 @@ def main():
                 cv2.imshow('image', cur_img)
                 if (value==0):
                     cv2.imshow('image',cat) # display original image when value = 0
-
             cv2.createTrackbar('Smooth',"image",0,255, callback)
+
+        elif key == ord('S'):
+            def callback(value):
+                # use global variable because we can only pass in one parameter
+                global cur_img
+                global cat
+                cur_img = util.smooth_fast(value,5,cat)
+                cv2.imshow('image', cur_img)
+                if (value == 0):
+                    cv2.imshow('image', cat)  # display original image when value = 0
+
+            cv2.createTrackbar('Smooth', "image", 0, 255, callback)
+
+
 
         elif key == ord('c'): #
             c1, c2, c3 = cv2.split(cat)
