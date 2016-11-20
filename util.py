@@ -83,3 +83,12 @@ def filter(img):
     print(img.dtype)
     return ret
 
+def derivative(img, mode):
+    if (mode == 'x'):
+        sobel = np.matrix([[-1,-2,-1],[0,0,0],[1,2,1]])
+    else:
+        sobel = np.matrix([[-1,0,1],[-2,0,2],[1,0,1]])
+    ret = signal.convolve2d(img,sobel,mode='same')
+    ret = ret.astype(np.uint8) # normalize
+    return ret
+

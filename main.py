@@ -66,6 +66,11 @@ def main():
                     cv2.imshow('image',cat) # display original image when value = 0
             cv2.createTrackbar('Smooth',"image",0,100, callback)
 
+        elif key == ord('x'):
+            cur_img = util.derivative(grayscale,'x')
+
+        elif key == ord('y'):
+            cur_img = util.derivative(grayscale,'y')
 
 
         elif key == ord('c'): #
