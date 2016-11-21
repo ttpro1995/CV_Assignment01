@@ -5,7 +5,7 @@ import math
 import numpy as np
 from scipy import signal
 import scipy.stats as st
-from lib import cv2
+import cv2
 def test():
     print('success')
 

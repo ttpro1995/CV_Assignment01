@@ -2,7 +2,7 @@
 # 1351040
 
 import unittest
-from lib import cv2
+import cv2
 import util
 class TestStringMethods(unittest.TestCase):
 
