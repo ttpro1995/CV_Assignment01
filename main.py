@@ -68,9 +68,18 @@ def main():
 
         elif key == ord('x'):
             cur_img = util.derivative(grayscale,'x')
+            #cur_img = cv2.Sobel(grayscale, cv2.CV_64F, 1, 0,
+            #          ksize=3)
 
         elif key == ord('y'):
             cur_img = util.derivative(grayscale,'y')
+            #cur_img = cv2.Sobel(grayscale, cv2.CV_64F, 0, 1,
+            #          ksize=3)
+
+        elif key == ord('m'):
+            cur_img = util.magnitude(grayscale,0)
+        elif key == ord('M'):
+            cur_img = util.magnitude(grayscale,1)
 
 
         elif key == ord('c'): #

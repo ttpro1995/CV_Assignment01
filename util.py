@@ -85,10 +85,24 @@ def filter(img):
 
 def derivative(img, mode):
     if (mode == 'x'):
-        sobel = np.matrix([[-1,-2,-1],[0,0,0],[1,2,1]])
+        sobel = np.matrix([[-1,0,1],[-2,0,2],[-1,0,1]])
     else:
-        sobel = np.matrix([[-1,0,1],[-2,0,2],[1,0,1]])
+        sobel = np.matrix([[1,2,1],[0,0,0],[-1,-2,-1]])
     ret = signal.convolve2d(img,sobel,mode='same')
-    ret = ret.astype(np.uint8) # normalize
+    #   ret = ret.astype(np.uint8) # normalize
     return ret
 
+''' m - show the magnitude of the gradient normalized to the range [0,255]. The gradient is
+computed based on the x and y derivatives of the image.'''
+def magnitude(img, mode = 1):
+    if (mode == 0):
+        derivative_x = derivative(img,'x').astype(np.float64)
+        derivative_y = derivative(img,'y').astype(np.float64)
+        print('derivative')
+    else:
+        derivative_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+        derivative_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+        print ('cv2 sobel')
+    ret = cv2.magnitude(derivative_x,derivative_y)
+    ret = ret.astype(np.uint8)
+    return ret
