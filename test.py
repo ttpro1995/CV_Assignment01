@@ -16,8 +16,6 @@ class TestStringMethods(unittest.TestCase):
         cat = util.bgr2gray(cat)
         cur_img_x = util.derivative(cat, mode='x')
         cur_img_y = util.derivative(cat, mode='y')
-        self.assertEquals(cur_img_x.dtype, 'uint8')
-        self.assertEquals(cur_img_y.dtype, 'uint8')
 
     def test_smooth(self):
         cat = cv2.imread('cat.jpg')
