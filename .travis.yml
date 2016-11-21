@@ -19,6 +19,7 @@ install:
   - conda info -a
   - conda install numpy
   - conda install scipy
+  - conda install -c https://conda.binstar.org/menpo opencv
 
 script:
   # Your test script goes here
