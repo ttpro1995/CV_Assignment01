@@ -9,6 +9,11 @@ import cv2
 def test():
     print('success')
 
+'''
+image = cv2.imread("lenacolor512.tiff", cv2.IMREAD_COLOR)  # uint8 image
+norm_image = cv2.normalize(image, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+'''
+
 ## convert color image to grayscale image
 def bgr2gray(img):
     ret = np.zeros((img.shape[0], img.shape[1]),
@@ -98,11 +103,15 @@ def magnitude(img, mode = 1):
     if (mode == 0):
         derivative_x = derivative(img,'x').astype(np.float64)
         derivative_y = derivative(img,'y').astype(np.float64)
+        derivative_x = cv2.normalize(derivative_x, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_64F)
+        derivative_y = cv2.normalize(derivative_y, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_64F)
         print('derivative')
     else:
-        derivative_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
-        derivative_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+        derivative_x = cv2.Sobel(img, cv2.CV_32F, 1, 0, ksize=3)
+        derivative_y = cv2.Sobel(img, cv2.CV_32F, 0, 1, ksize=3)
+        derivative_x = cv2.normalize(derivative_x, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_64F)
+        derivative_y = cv2.normalize(derivative_y, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_64F)
         print ('cv2 sobel')
     ret = cv2.magnitude(derivative_x,derivative_y)
-    ret = ret.astype(np.uint8)
+    # ret = ret.astype(np.uint8)
     return ret
