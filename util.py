@@ -9,10 +9,7 @@ import cv2
 def test():
     print('success')
 
-'''
-image = cv2.imread("lenacolor512.tiff", cv2.IMREAD_COLOR)  # uint8 image
-norm_image = cv2.normalize(image, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-'''
+
 
 ## convert color image to grayscale image
 def bgr2gray(img):
@@ -42,7 +39,9 @@ def calGaussianKernel(sigma,n):
         ret[x,y] = fraction * math.exp(ef)
     return ret
 
-## calculate
+'''
+Calculate gaussian kernel
+'''
 def calGaussianKernel2(sigma, n):
     interval = (2*sigma+1.)/(n)
     x = np.linspace(-sigma-interval/2., sigma+interval/2., n+1)
@@ -71,7 +70,9 @@ def smooth_fast(value, dim, img):
     kernel = calGaussianKernel2(5, dim)
     ret = cv2.filter2D(img,-1,kernel)
     return ret
-
+'''
+smooth the image by Gaussian Kernel
+'''
 def smooth(value,dim,img):
     kernel = calGaussianKernel2(value*0.1, dim)
     ret = signal.convolve2d(img, kernel, mode='same')
@@ -87,14 +88,17 @@ def filter(img):
     print(ret.dtype)
     print(img.dtype)
     return ret
-
-def derivative(img, mode):
+'''
+convert the image to grayscale and perform convolution with an x derivative filter
+'''
+def derivative(img, mode, normalization = False):
     if (mode == 'x'):
         sobel = np.matrix([[-1,0,1],[-2,0,2],[-1,0,1]])
     else:
         sobel = np.matrix([[1,2,1],[0,0,0],[-1,-2,-1]])
     ret = signal.convolve2d(img,sobel,mode='same')
-    #   ret = ret.astype(np.uint8) # normalize
+    if (normalization):
+        ret = ret.astype(np.uint8)  # normalize
     return ret
 
 ''' m - show the magnitude of the gradient normalized to the range [0,255]. The gradient is
@@ -114,4 +118,25 @@ def magnitude(img, mode = 1):
         print ('cv2 sobel')
     ret = cv2.magnitude(derivative_x,derivative_y)
     # ret = ret.astype(np.uint8)
+    return ret
+
+def rotation(img, degree):
+    rows, cols = img.shape
+    M = cv2.getRotationMatrix2D((cols / 2, rows / 2), degree, 1)
+    ret = cv2.warpAffine(img, M, (cols, rows))
+    # ret = cv2.copyMakeBorder(ret, rows // 4, rows // 4, cols // 4, cols // 4, cv2.BORDER_REFLECT)
+    return ret
+
+def nohole_rotation(img,degree):
+    rot = rotation(img,degree) # already rotation
+
+    # create the mask
+    aaaa, mask = cv2.threshold(rot, 10, 255, cv2.THRESH_BINARY)
+    mask_inv = cv2.bitwise_not(mask)
+
+    # black out the not-hole in background image
+    img1_bg = cv2.bitwise_and(img, img, mask=mask_inv)
+
+    # put rot on top of the background
+    ret = cv2.add(img1_bg,rot)
     return ret
