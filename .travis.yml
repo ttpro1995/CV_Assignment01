@@ -20,7 +20,9 @@ install:
   - conda install numpy
   - conda install scipy
   - conda install -c https://conda.binstar.org/menpo opencv
+  - pip install -U pytest
 
 script:
   # Your test script goes here
   python test.py
+  pytest test2.py
