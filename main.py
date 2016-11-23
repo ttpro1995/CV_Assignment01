@@ -15,14 +15,24 @@ cat = None
 def nothing(a):
     print (a)
 
-
-
 def main():
     global cur_img
     global cat
     global grayscale
     status = 0
-
+    help = '''
+i - Show original image
+w - Save file as img.png into current directory
+s - Smooth image. Drag the top bar to change the amount
+S - A better way to smooth image. Drag the top bar to change the amount
+G or g - turn image into grayscale.
+c - display image in green, red, blue
+x - Sobel filter in x direction
+y - Sobel filter in y direction
+M or m - display magnitude of gradient.
+r - rotate mode. Drag the track bar to rotate the image.
+q - quit
+    '''
     # load image
     cat = cv2.imread('cat.jpg')
     grayscale = cv2.cvtColor(cat,cv2.COLOR_BGR2GRAY)
@@ -91,7 +101,9 @@ def main():
 
 
         elif key == ord('c'): #
-            c1, c2, c3 = cv2.split(cat)
+            c1 = cat[:,:,0]
+            c2 = cat[:,:,1]
+            c3 = cat[:,:,2]
             if status == 0:
                 channel = c1
                 status = 1
@@ -109,6 +121,10 @@ def main():
         elif key == ord('w'):
             cv2.imwrite('img.png',cur_img)
             print 'w'
+
+        elif key == ord('h'):
+            print help
+
         elif key == ord('q'):
             print 'q'
             quit()

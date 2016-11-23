@@ -1,0 +1,48 @@
+\documentclass[]{article}
+
+%opening
+\title{CS412 -- OpenCV Homework 01}
+\author{Thai Thien - 1351040}
+
+\begin{document}
+
+\maketitle
+
+\section{How to use}
+\begin{itemize}
+	\item i - show original image
+	\item w - save file as img.png into current directory
+	\item s - smooth image. Drag the top bar to change the amount
+	\item S - A better way to smooth image. Drag the top bar to change the amount
+	\item G or g - turn image into grayscale.
+	\item c - display image in green, red, blue
+	\item x - Sobel filter in x direction
+	\item y - Sobel filter in y direction
+	\item M or m - display magnitude of gradient. 
+	\item r - rotate mode. Drag the track bar to rotate the image.
+	\item q - quit
+	\item h - display this message on console
+\end{itemize}
+
+\section{Display one channel of image}
+The matrix of jpg image have shape (height, width, channel). The third dimension are channel, which is green, red, blue for [:,:,0], [:,:,1], [:,:,2]
+
+To display one channel of a source image create empty matrix have same shape with image matrix. Get channel c from source[:,:,c] then put into [:,:,c] of our matrix.  
+
+\section{Convert to grayscale}
+Extract 3 channel from image. Then make new matrix shape(height, width) with each element is average of 3 channel from source image.
+
+\section{Smooth}
+Convolution source image with Gaussian kernel. Change sigma to change the amount of smooth.
+
+\section{Derivative filter}
+Convolution Sobel kernel with image. 
+
+\section{Magnitude of the gradient}
+Compute x, y derivative of the image using Sobel kernel. Then calculate magnitude of gradient using cv2.magnitude 
+
+
+\section{Rotation}
+Apply wrap affine to rotate image. Merge rotated image to old image so there is no hole. 
+
+\end{document}
