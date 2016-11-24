@@ -19,6 +19,7 @@
 	\item x - Sobel filter in x direction
 	\item y - Sobel filter in y direction
 	\item M or m - display magnitude of gradient. 
+	\item p - plot the gradient vectors
 	\item r - rotate mode. Drag the track bar to rotate the image.
 	\item q - quit
 	\item h - display this message on console
@@ -41,6 +42,8 @@ Convolution Sobel kernel with image.
 \section{Magnitude of the gradient}
 Compute x, y derivative of the image using Sobel kernel. Then calculate magnitude of gradient using cv2.magnitude 
 
+\section{Plot gradient vector}
+As N increase, the number of line reduce. The shape of cat is clearer as N increase.
 
 \section{Rotation}
 Apply wrap affine to rotate image. Merge rotated image to old image so there is no hole. 

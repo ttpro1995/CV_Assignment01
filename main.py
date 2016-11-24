@@ -122,6 +122,16 @@ q - quit
             cv2.imwrite('img.png',cur_img)
             print 'w'
 
+        elif key == ord('p'):
+            def callback(value):
+                # use global variable because we can only pass in one parameter
+                global grayscale
+                global cur_img
+                cur_img = util.plotGradVec(grayscale,n = value)
+                cv2.imshow('image', cur_img)
+
+            cv2.createTrackbar('Plot',"image",1,20, callback)
+
         elif key == ord('h'):
             print help
 

@@ -120,6 +120,23 @@ def magnitude(img, mode = 1):
     # ret = ret.astype(np.uint8)
     return ret
 
+def plotGradVec(img, k=800, n=7, showOnlyEdge=True):
+    if (n==0):
+        n = 1 # prevent case n = 0
+    dx = derivative(img,'x').astype(np.float64)
+    dy = derivative(img,'y').astype(np.float64)
+    grad_m = magnitude(img)
+    ret = np.copy(grad_m)
+    rows, cols = img.shape
+    mean = np.mean(grad_m)
+    for i in range(0, rows):
+        for j in range(0, cols):
+            if (grad_m[i, j] > mean or showOnlyEdge is False and grad_m[i, j] > 0) and i % n == 0 and j % n == 0:
+                cv2.line(ret, (j, i),
+                         (int(j + dx[i, j] / grad_m[i, j] * k), int(i + dy[i, j] / grad_m[i, j] * k)), 255)
+                cv2.circle(ret, (int(j + dx[i, j] / grad_m[i, j] * k), int(i + dy[i, j] / grad_m[i, j] * k)), 5, 255)
+    return ret
+
 def rotation(img, degree):
     rows, cols = img.shape
     M = cv2.getRotationMatrix2D((cols / 2, rows / 2), degree, 1)
@@ -140,3 +157,4 @@ def nohole_rotation(img,degree):
     # put rot on top of the background
     ret = cv2.add(img1_bg,rot)
     return ret
+

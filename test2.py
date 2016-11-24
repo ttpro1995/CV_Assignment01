@@ -33,3 +33,7 @@ class TestUtil():
         for i in range(0,360):
             ret = util.rotation(cat,i)
 
+    def test_plot(self):
+        cat = cv2.imread('cat.jpg')
+        grayscale = util.bgr2gray(cat)
+        cur_img = util.plotGradVec(grayscale, n = 20)
